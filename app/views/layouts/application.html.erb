@@ -21,7 +21,8 @@
             <%= link_to root_path , class: "navbar-brand" do %>
               <i class="fa fa-group"></i>
               DevMatch
-            <% end %>        </div>
+            <% end %>        
+        </div>
         <div class="collapse navbar-collapse" id="main-nav-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><%= link_to "About", about_path %></li>
@@ -29,8 +30,14 @@
           </ul>
         </div><!-- /.navbar-collapse -->
       </div>
-</nav>
-    <div class="">
+    </nav>
+    
+    <div class="container">
+            <% flash.each do |type, msg| %>
+              <%= content_tag :div, msg, class: "alert alert-#{type}" %>
+            <% end %>
+    </div>
+    
     <%= yield %>
     </div>
   </body>
