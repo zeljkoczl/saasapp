@@ -1,18 +1,31 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>myApp</title>
+    <title>DevMatch</title>
+    
     <%= csrf_meta_tags %>
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet">
+    <%= favicon_link_tag '/favicon-group.ico' %>
+    <!-- Responsive on Mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    
+    <meta charset="utf-8">
+    
+    
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag "https://js.stripe.com/v2/", type: 'text/javascript' %>
+    <!-- Stripe JS Lib -->
+    <%= javascript_include_tag "https://js.stripe.com/v2/", type:'text/javascript' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
+    
+    <!-- Meta tags hold bits and pieces of info -->
+    <%= tag :meta , :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
   </head>
 
   <body>
+    <!-- Nav Bar -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation">
-      <div class='container'>
+      <div class="container flash-container">
+        
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav-collapse">
             <span class="sr-only">Toggle navigation</span>
@@ -20,34 +33,55 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-            <%= link_to root_path , class: "navbar-brand" do %>
-              <i class="fa fa-group"></i>
-              DevMatch
-            <% end %>        
+          
+          <!-- Links to Homepage -->
+          <%= link_to root_path, class: "navbar-brand" do %>
+            <i class="fa fa-group"></i>
+            DevMatch
+          <% end %>
         </div>
+        
+        <!-- Links Here -->
         <div class="collapse navbar-collapse" id="main-nav-collapse">
           <div class="nav navbar-nav navbar-right">
+            
+            <!-- Show Log Out button if user signs in -->
             <% if user_signed_in? %>
-              <%= link_to "Log Out", destroy_user_session_path, method: :delete, class: "btn btn-default navbar-btn" %>
+              <%= link_to "Log Out", destroy_user_session_path, method: :delete, class:"btn btn-default navbar-btn" %>
             <% else %>
               <%= link_to "Log In", new_user_session_path, class: "btn btn-default navbar-btn" %>
             <% end %>
+            
           </div>
           <ul class="nav navbar-nav navbar-right">
+
+            <!-- Linking pages the Rails way -->
+            <!-- The about_path allows us to have more flexability in the routes file in terms of direction -->
             <li><%= link_to "About", about_path %></li>
             <li><%= link_to "Contact Us", new_contact_path %></li>
+            
+            <% if user_signed_in? %>
+              <li><%= link_to "Community", users_path %></li>
+              <li><%= link_to "My Account", edit_user_registration_path %></li>
+            <% end %>
+            
           </ul>
         </div><!-- /.navbar-collapse -->
+        
       </div>
     </nav>
     
-    <div class="container">
-            <% flash.each do |type, msg| %>
-              <%= content_tag :div, msg, class: "alert alert-#{type}" %>
-            <% end %>
+    <!-- We place it here to be dynamic for future changes -->
+    <div class="container flash-container">
+       <% flash.each do |type, msg| %>
+        <!--
+          Automatically generates divs for us
+          the #{type} is a string interpretor
+        -->
+        <%= content_tag :div, msg, class: "alert alert-#{type}" %>
+      <% end %>
     </div>
     
     <%= yield %>
-    </div>
   </body>
 </html>
