@@ -10,6 +10,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.0]
       t.datetime :reset_password_sent_at
 
       ## Rememberable
+      ## Passwords are hashed
       t.datetime :remember_created_at
 
       ## Trackable
